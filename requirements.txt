@@ -1,4 +1,4 @@
 elevenlabs
 groq
-base64
+pydub
 io
