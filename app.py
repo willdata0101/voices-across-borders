@@ -10,9 +10,7 @@ translation accuracy and tone. Ideal for showcasing real-world multilingual API 
 import streamlit as st
 from elevenlabs.client import ElevenLabs
 from groq import Groq
-import requests
-import base64
-from io import BytesIO
+from pydub import AudioSegment
 
 # ======CONFIGURATION========
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
@@ -34,7 +32,7 @@ HEADERS = {
 def transcribe_audio(audio_file):
     st.info("Transcribing audio...")
     # Transcribe audio using ElevenLabs API
-    audio_data = base64.b64encode(audio_file.read()).decode('utf-8')
+    audio_data = AudioSegment.from_file(audio_file)
     transcription = client_el.speech_to_text.convert(
         file=audio_data,
         model_id="scribe_v1",
