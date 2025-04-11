@@ -13,9 +13,9 @@ from groq import Groq
 from pydub import AudioSegment
 
 # ======CONFIGURATION========
-GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+GROQ_API_KEY = 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-ELEVENLABS_API_KEY = st.secrets["ELEVENLABS_API_KEY"]
+ELEVENLABS_API_KEY = 
 
 
 # Initialize ElevenLabs client
