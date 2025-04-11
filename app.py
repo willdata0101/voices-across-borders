@@ -35,7 +35,7 @@ def transcribe_audio(audio_file):
     st.info("Transcribing audio...")
     # Transcribe audio using ElevenLabs API
     audio_data = base64.b64encode(audio_file.read()).decode('utf-8')
-    transcription = client.speech_to_text.convert(
+    transcription = client_el.speech_to_text.convert(
         file=audio_data,
         model_id="scribe_v1",
         language_code="spa",
