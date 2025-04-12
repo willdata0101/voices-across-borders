@@ -33,11 +33,14 @@ def transcribe_audio(audio_file):
     # Transcribe audio using ElevenLabs API
     audio_data = AudioSegment.from_file(audio_file)
     audio_data = audio_data.set_frame_rate(44100).set_channels(1).set_sample_width(2) # Convert to 2 bytes / 16-bit .wav
-    transcription = client_el.speech_to_text.convert(
-        file=audio_data,
-        model_id="scribe_v1",
-        language_code="es",
-    )
+    converted_path = "converted_audio.wav"
+    audio_data.export(converted_path, format="wav")
+    with open(converted_path, "rb") as f:
+        transcription = client_el.speech_to_text.convert(
+            file=f,
+            model_id="scribe_v1",
+            language_code="es",
+        )
     return transcription['text'] if 'text' in transcription else "Transcription failed."
 
 def translate_transcript(transcript):
