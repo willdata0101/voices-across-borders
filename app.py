@@ -38,6 +38,10 @@ def transcribe_audio(audio_file):
     audio_data.export(buffer, format="wav")
     buffer.seek(0)
     st.success("Audio converted successfully!")
+    transcription = client_el.convert(
+        file = buffer,
+        model_id = "eleven_multilingual_v2"
+    )
     return transcription['text'] if 'text' in transcription else "Transcription failed."
 
 def translate_transcript(transcript):
