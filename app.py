@@ -11,11 +11,15 @@ import streamlit as st
 from elevenlabs.client import ElevenLabs
 from groq import Groq
 from pydub import AudioSegment
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # ======CONFIGURATION========
-GROQ_API_KEY = 
+GROQ_API_KEY = os.environ("Groq")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-ELEVENLABS_API_KEY = 
+ELEVENLABS_API_KEY = os.environ("ElevenLabs")
 
 
 # Initialize ElevenLabs client
