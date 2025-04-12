@@ -40,7 +40,7 @@ def transcribe_audio(audio_file):
     st.success("Audio converted successfully!")
     with st.spinner("✍ Transcribing audio... "):
         transcript = client_el.speech_to_text.convert(
-            file = buffer,
+            file = audio_buffer,
             model_id = "scribe_v1"
         )
     st.markdown("📜 Transcription: ")
