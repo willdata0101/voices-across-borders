@@ -40,7 +40,7 @@ def transcribe_audio(audio_file):
     st.success("Audio converted successfully!")
     transcription = client_el.speech_to_text.convert(
         file = buffer,
-        model_id = "eleven_multilingual_v2"
+        model_id = "scribe_v1"
     )
     return transcription['text'] if 'text' in transcription else "Transcription failed."
 
