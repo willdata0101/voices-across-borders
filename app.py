@@ -13,6 +13,7 @@ from groq import Groq
 from pydub import AudioSegment
 from dotenv import load_dotenv
 import os
+import io
 
 load_dotenv()
 
