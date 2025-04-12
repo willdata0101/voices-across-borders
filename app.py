@@ -38,7 +38,7 @@ def transcribe_audio(audio_file):
     audio_data.export(buffer, format="wav")
     buffer.seek(0)
     st.success("Audio converted successfully!")
-    transcription = client_el.convert(
+    transcription = client_el.speech_to_text.convert(
         file = buffer,
         model_id = "eleven_multilingual_v2"
     )
