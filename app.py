@@ -109,8 +109,8 @@ if uploaded_file:
     translated = translate_transcript(transcript)
     st.subheader("Translated Text")
 
+    with st.spinner("💿 Generating dub...")
     dubbed_audio = generate_dub(translated)
-    st.info("Generating dub...")
     if dubbed_audio:
         st.success("Dubbing process completed successfully!")
         dubbed_audio.seek(0)
