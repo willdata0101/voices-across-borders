@@ -109,15 +109,16 @@ if uploaded_file:
     translated = translate_transcript(transcript)
     st.subheader("Translated Text")
 
-    with st.spinner("💿 Generating dub...")
-    dubbed_audio = generate_dub(translated)
-    if dubbed_audio:
-        st.success("Dubbing process completed successfully!")
-        dubbed_audio.seek(0)
-        st.audio(dubbed_audio, format='audio/wav')
-        
-    qa_result = run_quality_check(transcript, translated)
-    if qa_result:
-        st.success("Quality check complete!")
+    with st.spinner("💿 Generating dub..."):
+        dubbed_audio = generate_dub(translated)
+        if dubbed_audio:
+            st.success("Dubbing process completed successfully!")
+            dubbed_audio.seek(0)
+            st.audio(dubbed_audio, format='audio/wav')
+
+    with st.spinner("Running quality check... ")
+        qa_result = run_quality_check(transcript, translated)
+        if qa_result:
+            st.success("Quality check complete!")
     st.markdown("### Quality Check Result")
     st.write(qa_result)
