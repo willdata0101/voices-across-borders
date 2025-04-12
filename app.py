@@ -35,7 +35,7 @@ def transcribe_audio(audio_file):
     transcription = client_el.speech_to_text.convert(
         file=audio_data,
         model_id="scribe_v1",
-        language_code="spa",
+        language_code="es",
     )
     return transcription['text'] if 'text' in transcription else "Transcription failed."
 
