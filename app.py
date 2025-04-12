@@ -67,8 +67,8 @@ def generate_dub(translated_text):
         voice_id="EXAVITQu4vr4xnSDxMaL",
         model_id="eleven_multilingual_v2"
     )
-    if 'audio' in audio_data:
-        return io.BytesIO(audio_data['audio'])
+    if audio_data:
+        print(audio_data)
     else:
         return None
 
