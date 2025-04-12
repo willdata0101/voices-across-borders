@@ -17,9 +17,9 @@ import os
 load_dotenv()
 
 # ======CONFIGURATION========
-GROQ_API_KEY = os.environ("Groq")
+GROQ_API_KEY = os.get_env("Groq")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-ELEVENLABS_API_KEY = os.environ("ElevenLabs")
+ELEVENLABS_API_KEY = os.get_env("ElevenLabs")
 
 
 # Initialize ElevenLabs client
