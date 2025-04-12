@@ -61,7 +61,6 @@ def translate_transcript(transcript):
     return response
 
 def generate_dub(translated_text):
-    st.info("Generating English dub using ElevenLabs API...")
     audio_data = client_el.text_to_speech.convert(
         text=translated_text,
         voice_id="EXAVITQu4vr4xnSDxMaL",
@@ -73,7 +72,6 @@ def generate_dub(translated_text):
         return None
 
 def run_quality_check(spanish, english):
-    st.info("Running quality check using Groq API...")
     st.write(spanish)
     st.write(english)
     qa_prompt = f"""
@@ -112,11 +110,14 @@ if uploaded_file:
     st.subheader("Translated Text")
 
     dubbed_audio = generate_dub(translated)
+    st.info("Generating dub...")
     if dubbed_audio:
         st.success("Dubbing process completed successfully!")
         dubbed_audio.seek(0)
         st.audio(dubbed_audio, format='audio/wav')
-
+        
     qa_result = run_quality_check(transcript, translated)
+    if qa_result:
+        st.success("Quality check complete!")
     st.markdown("### Quality Check Result")
     st.write(qa_result)
