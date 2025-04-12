@@ -3,7 +3,7 @@
 Voices Across Borders - A Multilingual Podcast Audio Dubbing Tool
 
 This Streamlit-based app takes a Spanish podcast/audio file, dubs it in English via ElevenLabs API,
-and runs a linguistic and semantic QA using LLMs (in this case, Mixtral-8x7B via Groq) to evaluate
+and runs a linguistic and semantic QA using LLMs (in this case, Llama-3-8-B via Groq) to evaluate
 translation accuracy and tone. Ideal for showcasing real-world multilingual API deployment.
 """
 
@@ -21,8 +21,6 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("Groq")
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 ELEVENLABS_API_KEY = os.getenv("ElevenLabs")
-st.write(f"GROQ API KEY: {GROQ_API_KEY}")
-st.write(f"ELEVENLABS API KEY: {ELEVENLABS_API_KEY}")
 # Initialize ElevenLabs client
 client_el = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 # Initialize Groq client
@@ -114,10 +112,9 @@ if uploaded_file:
     st.subheader("Translated Text")
 
     dubbed_audio = generate_dub(translated)
+    st.success("Dubbing process completed successfully!")
     st.audio(dubbed_audio, format='audio/wav')
 
     qa_result = run_quality_check(transcript, translated)
     st.markdown("### Quality Check Result")
     st.write(qa_result)
-
-    st.success("Dubbing process completed successfully!")
