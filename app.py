@@ -75,6 +75,8 @@ def generate_dub(translated_text):
 
 def run_quality_check(spanish, english):
     st.info("Running quality check using Groq API...")
+    st.write(spanish)
+    st.write(english)
     qa_prompt = f"""
     Compare the following Spanish source with its English translation.
     - Identify any mistranslations or tone shifts.
