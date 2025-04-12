@@ -44,7 +44,7 @@ def transcribe_audio(audio_file):
             model_id = "scribe_v1"
         )
     st.markdown("📜 Transcription: ")
-    return transcript['text'] if 'text' in transcript else "Transcription failed."
+    st.write(transcript)
 
 def translate_transcript(transcript):
     st.info("Translating transcript using Llama-3-8B...")
