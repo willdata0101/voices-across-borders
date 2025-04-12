@@ -63,8 +63,7 @@ def generate_dub(translated_text):
     audio_data = client_el.text_to_speech.convert(
         text=translated_text,
         voice_id="EXAVITQu4vr4xnSDxMaL",
-        model_id="eleven_multilingual_v2",
-        language_code="en"
+        model_id="eleven_multilingual_v2"
     )
     
     return audio_data['audio'] if 'audio' in audio_data else "Dub generation failed."
