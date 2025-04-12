@@ -27,11 +27,6 @@ client_el = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 # Initialize Groq client
 client_gr = Groq(api_key=GROQ_API_KEY)
 
-HEADERS = {
-    "Authorization": f"Bearer {GROQ_API_KEY}",
-    "Content-Type": "application/json"
-}
-
 # ======APP LAYOUT========
 def transcribe_audio(audio_file):
     st.info("Transcribing audio...")
