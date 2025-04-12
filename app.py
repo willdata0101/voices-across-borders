@@ -112,8 +112,10 @@ if uploaded_file:
     st.subheader("Translated Text")
 
     dubbed_audio = generate_dub(translated)
-    st.success("Dubbing process completed successfully!")
-    st.audio(dubbed_audio, format='audio/wav')
+    if dubbed_audio:
+        st.success("Dubbing process completed successfully!")
+        dubbed_audio.seek(0)
+        st.audio(dubbed_audio, format='audio/wav')
 
     qa_result = run_quality_check(transcript, translated)
     st.markdown("### Quality Check Result")
