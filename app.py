@@ -38,7 +38,7 @@ def transcribe_audio(audio_file):
     audio.export(audio, format="wav")
     audio.seek(0)
     st.success("Audio converted successfully!")
-    with st.spinner("✍ Transcribing audio... ")
+    with st.spinner("✍ Transcribing audio... "):
         transcript = client_el.speech_to_text.convert(
             file = buffer,
             model_id = "scribe_v1"
