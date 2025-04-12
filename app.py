@@ -34,15 +34,18 @@ def transcribe_audio(audio_file):
     # Transcribe audio using ElevenLabs API
     audio_data = AudioSegment.from_file(audio_file)
     audio_data = audio_data.set_frame_rate(44100).set_channels(1).set_sample_width(2) # Convert to 2 bytes / 16-bit .wav
-    buffer = io.BytesIO()
-    audio_data.export(buffer, format="wav")
-    buffer.seek(0)
+    audio = io.BytesIO()
+    audio.export(audio, format="wav")
+    audio.seek(0)
     st.success("Audio converted successfully!")
-    transcription = client_el.speech_to_text.convert(
-        file = buffer,
-        model_id = "scribe_v1"
-    )
-    return transcription['text'] if 'text' in transcription else "Transcription failed."
+    with st.spinner("✍ Transcribing audio... ")
+        transcript = client_el.speech_to_text.convert(
+            file = buffer,
+            model_id = "scribe_v1"
+        )
+    st.markdown("📜 Transcription: ")
+    st.write(transcript.get("text") or transcript)
+    # return transcript['text'] if 'text' in transcription else "Transcription failed."
 
 def translate_transcript(transcript):
     st.info("Translating transcript using Llama-3-8B...")
