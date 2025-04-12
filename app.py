@@ -32,6 +32,7 @@ def transcribe_audio(audio_file):
     st.info("Transcribing audio...")
     # Transcribe audio using ElevenLabs API
     audio_data = AudioSegment.from_file(audio_file)
+    audio_data = audio_data.set_frame_rate(44100).set_channels(1).set_sample_width(2) # Convert to 2 bytes / 16-bit .wav
     transcription = client_el.speech_to_text.convert(
         file=audio_data,
         model_id="scribe_v1",
