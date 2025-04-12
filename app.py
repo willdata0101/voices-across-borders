@@ -68,8 +68,10 @@ def generate_dub(translated_text):
         voice_id="EXAVITQu4vr4xnSDxMaL",
         model_id="eleven_multilingual_v2"
     )
-    
-    return audio_data['audio'] if 'audio' in audio_data else "Dub generation failed."
+    if 'audio' in audio_data:
+        return io.BytesIO(audio_data.audio)
+    else:
+        return None
 
 def run_quality_check(spanish, english):
     st.info("Running quality check using Groq API...")
