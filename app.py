@@ -45,6 +45,7 @@ def transcribe_audio(audio_file):
         )
     st.markdown("📜 Transcription: ")
     st.write(transcript.text)
+    return transcript.text
 
 def translate_transcript(transcript):
     st.info("Translating transcript using Llama-3-8B...")
