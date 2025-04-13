@@ -136,7 +136,7 @@ if uploaded_file:
             st.download_button(
                 label="Download dub",
                 data = dubbed_audio,
-                file_name = f"dubbed_audio.{mime_type.split("/")[-1]}",
+                file_name = f"dubbed_audio.{mime_type.split('/')[-1]}",
                 mime=mime_type
             )
         else:
