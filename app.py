@@ -79,7 +79,7 @@ def generate_dub(translated_text, to_wav=False):
         )
 
         if 'audio' in audio_data:
-            audio_stream, mime_type = convert_audio_response(audio_data['audio'] to_wav=to_wav)
+            audio_stream, mime_type = convert_audio_response(audio_data['audio'], to_wav=to_wav)
             return audio_stream, mime_type
         else:
             st.error("❌ No audio data returned.")
