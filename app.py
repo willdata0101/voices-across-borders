@@ -66,7 +66,7 @@ def generate_dub(translated_text):
         voice_id="EXAVITQu4vr4xnSDxMaL",
         model_id="eleven_multilingual_v2"
     )
-    st.write(audio_data)
+    return audio_data['audio']
 
 def run_quality_check(spanish, english):
     st.write(spanish)
