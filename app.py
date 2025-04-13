@@ -41,8 +41,6 @@ def transcribe_audio(audio_file):
             file = audio_buffer,
             model_id = "scribe_v1"
         )
-    st.markdown("📜 Transcription: ")
-    st.write(transcript.text)
     return transcript.text
 
 def translate_transcript(transcript):
@@ -91,8 +89,6 @@ def generate_dub(translated_text, to_wav=False):
         return None, None
         
 def run_quality_check(spanish, english):
-    st.write(spanish)
-    st.write(english)
     qa_prompt = f"""
     Compare the following Spanish source with its English translation.
     - Identify any mistranslations or tone shifts.
@@ -123,7 +119,7 @@ uploaded_file = st.file_uploader("Choose a Spanish audio file", type=["mp3", "wa
 
 if uploaded_file:
     transcript = transcribe_audio(uploaded_file)
-    st.subheader("Transcription")
+    st.subheader("📜Transcription")
     st.write(transcript)
 
     translated = translate_transcript(transcript)
