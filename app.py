@@ -60,14 +60,35 @@ def translate_transcript(transcript):
     response = completion.choices[0].message.content
     return response
 
-def generate_dub(translated_text):
-    audio_data = client_el.text_to_speech.convert(
-        text=translated_text,
-        voice_id="EXAVITQu4vr4xnSDxMaL",
-        model_id="eleven_multilingual_v2"
-    )
-    return audio_data
+# Helper function for generate_dub
+def convert_audio_response(audio, to_wav=False):
+    # Handle generator or bytes input
+    if isinstance(audio, (bytes, bytearray)):
+        audio_bytes = audio
+    elif hasattr(audio, '__iter__'):
+        audio_bytes = b''.join(audio)
+    else:
+        raise ValueError("Unsupported audio format.")
 
+def generate_dub(translated_text, to_wav=False):
+    try:
+        audio_data = client_el.text_to_speech.convert(
+            text=translated_text,
+            voice_id="EXAVITQu4vr4xnSDxMaL",
+            model_id="eleven_multilingual_v2"
+        )
+
+        if 'audio' in audio_data:
+            audio_stream, mime_type = convert_audio_response(audio_data['audio'] to_wav=to_wav)
+            return audio_stream, mime_type
+        else:
+            st.error("❌ No audio data returned.")
+            return None, None
+
+    except Exception as e:
+        st.error(f"ElevenLabs API error: {e}")
+        return None, None
+        
 def run_quality_check(spanish, english):
     st.write(spanish)
     st.write(english)
@@ -107,11 +128,19 @@ if uploaded_file:
     st.subheader("Translated Text")
 
     with st.spinner("💿 Generating dub..."):
-        dubbed_audio = generate_dub(translated)
+        dubbed_audio, mime_type = generate_dub(translated)
         if dubbed_audio:
             st.success("Dubbing process completed successfully!")
             dubbed_audio.seek(0)
-            st.audio(dubbed_audio, format='audio/mp3')
+            st.audio(dubbed_audio, format=mime_type)
+            st.download_button(
+                label="Download dub",
+                data = dubbed_audio,
+                file_name = f"dubbed_audio.{mime_type.split("/")[-1]}",
+                mime=mime_type
+            )
+        else:
+            st.warning("No audio to play or download.")
 
     with st.spinner("Running quality check... "):
         qa_result = run_quality_check(transcript, translated)
