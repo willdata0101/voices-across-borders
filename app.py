@@ -79,7 +79,7 @@ def generate_dub(translated_text, to_wav=False):
     try:
         audio_data = client_el.text_to_speech.convert(
             text=translated_text,
-            voice_id="EXAVITQu4vr4xnSDxMaL",
+            voice_id="zcAOhNBS3c14rBihAFp1",
             model_id="eleven_multilingual_v2"
         )
 
