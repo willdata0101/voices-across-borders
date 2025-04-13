@@ -70,6 +70,10 @@ def convert_audio_response(audio, to_wav=False):
     else:
         raise ValueError("Unsupported audio format.")
 
+    audio_stream = io.BytesIO(audio_bytes)
+    audio_stream.seek(0)
+    return audio_stream, "audio/mp3"
+
 def generate_dub(translated_text, to_wav=False):
     try:
         audio_data = client_el.text_to_speech.convert(
