@@ -52,7 +52,8 @@ def translate_transcript(transcript):
         messages = [
             {
                 "role": "user",
-                "content": f"Translate the following Spanish text to professional English:\n\n{transcript}"
+                "content": f"""Translate the following Spanish text to professional English.
+                Only return the translation, nothing else. Do not provide any commentary afterward.\n\n{transcript}"""
             }
         ]
     )
