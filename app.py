@@ -124,9 +124,11 @@ uploaded_file = st.file_uploader("Choose a Spanish audio file", type=["mp3", "wa
 if uploaded_file:
     transcript = transcribe_audio(uploaded_file)
     st.subheader("Transcription")
+    st.write(transcript)
 
     translated = translate_transcript(transcript)
     st.subheader("Translated Text")
+    st.write(translated)
 
     with st.spinner("💿 Generating dub..."):
         dubbed_audio, mime_type = generate_dub(translated)
