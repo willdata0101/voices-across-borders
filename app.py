@@ -78,12 +78,8 @@ def generate_dub(translated_text, to_wav=False):
             model_id="eleven_multilingual_v2"
         )
 
-        if 'audio' in audio_data:
-            audio_stream, mime_type = convert_audio_response(audio_data['audio'], to_wav=to_wav)
-            return audio_stream, mime_type
-        else:
-            st.error("❌ No audio data returned.")
-            return None, None
+        audio_stream, mime_type = convert_audio_response(audio_data, to_wav=to_wav)
+        return audio_stream, mime_type
 
     except Exception as e:
         st.error(f"ElevenLabs API error: {e}")
