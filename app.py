@@ -111,7 +111,7 @@ if uploaded_file:
         if dubbed_audio:
             st.success("Dubbing process completed successfully!")
             dubbed_audio.seek(0)
-            st.audio(dubbed_audio, format='audio/wav')
+            st.audio(dubbed_audio, format='audio/mp3')
 
     with st.spinner("Running quality check... "):
         qa_result = run_quality_check(transcript, translated)
