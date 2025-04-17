@@ -7,7 +7,7 @@ and runs a linguistic and semantic QA using LLMs (in this case, Llama-3-8-B via 
 translation accuracy and tone. Ideal for showcasing real-world multilingual API deployment.
 """
 
-import streamlit as st
+#import streamlit as st
 from elevenlabs.client import ElevenLabs
 from groq import Groq
 from pydub import AudioSegment
@@ -18,9 +18,12 @@ import io
 load_dotenv()
 
 # ======CONFIGURATION========
-GROQ_API_KEY = os.getenv("Groq")
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-ELEVENLABS_API_KEY = os.getenv("ElevenLabs")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+
+print("GROQ_API_KEY loaded?", bool(GROQ_API_KEY))
+print("ELEVENLABS_API_KEY loaded?", bool(ELEVENLABS_API_KEY))
+
 # Initialize ElevenLabs client
 client_el = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 # Initialize Groq client
@@ -28,15 +31,15 @@ client_gr = Groq(api_key=GROQ_API_KEY)
 
 # ======APP LAYOUT========
 def transcribe_audio(audio_file):
-    st.info("Transcribing audio...")
+    print("Transcribing audio...")
     # Transcribe audio using ElevenLabs API
     audio_data = AudioSegment.from_file(audio_file)
     audio_data = audio_data.set_frame_rate(44100).set_channels(1).set_sample_width(2) # Convert to 2 bytes / 16-bit .wav
     audio_buffer = io.BytesIO()
     audio_data.export(audio_buffer, format="wav")
     audio_buffer.seek(0)
-    st.success("Audio converted successfully!")
-    with st.spinner("✍ Transcribing audio... "):
+    print("Audio converted successfully!")
+    with print("✍ Transcribing audio... "):
         transcript = client_el.speech_to_text.convert(
             file = audio_buffer,
             model_id = "scribe_v1"
@@ -44,7 +47,7 @@ def transcribe_audio(audio_file):
     return transcript.text
 
 def translate_transcript(transcript):
-    st.info("Translating transcript using Llama-3-8B...")
+    print("Translating transcript using Llama-3-8B...")
     completion = client_gr.chat.completions.create(
         model = "llama3-8b-8192",
         messages = [
@@ -85,7 +88,7 @@ def generate_dub(translated_text, to_wav=False):
         return audio_stream, mime_type
 
     except Exception as e:
-        st.error(f"ElevenLabs API error: {e}")
+        print(f"ElevenLabs API error: {e}")
         return None, None
         
 def run_quality_check(spanish, english):
@@ -113,37 +116,37 @@ def run_quality_check(spanish, english):
     return response
 
 # ======APP LOGIC========
-st.title("Voices Across Borders - Multilingual Podcast Dubbing Tool")
-st.write("Upload a Spanish podcast audio file for dubbing in English.")
-uploaded_file = st.file_uploader("Choose a Spanish audio file", type=["mp3", "wav"])
+# st.title("Voices Across Borders - Multilingual Podcast Dubbing Tool")
+# st.write("Upload a Spanish podcast audio file for dubbing in English.")
+# uploaded_file = st.file_uploader("Choose a Spanish audio file", type=["mp3", "wav"])
 
-if uploaded_file:
-    transcript = transcribe_audio(uploaded_file)
-    st.subheader("📜Transcription")
-    st.write(transcript)
+# if uploaded_file:
+#     transcript = transcribe_audio(uploaded_file)
+#     st.subheader("📜Transcription")
+#     st.write(transcript)
 
-    translated = translate_transcript(transcript)
-    st.subheader("Translated Text")
-    st.write(translated)
+#     translated = translate_transcript(transcript)
+#     st.subheader("Translated Text")
+#     st.write(translated)
 
-    with st.spinner("💿 Generating dub..."):
-        dubbed_audio, mime_type = generate_dub(translated)
-        if dubbed_audio:
-            st.success("Dubbing process completed successfully!")
-            dubbed_audio.seek(0)
-            st.audio(dubbed_audio, format=mime_type)
-            st.download_button(
-                label="Download dub",
-                data = dubbed_audio,
-                file_name = f"dubbed_audio.{mime_type.split('/')[-1]}",
-                mime=mime_type
-            )
-        else:
-            st.warning("No audio to play or download.")
+#     with st.spinner("💿 Generating dub..."):
+#         dubbed_audio, mime_type = generate_dub(translated)
+#         if dubbed_audio:
+#             st.success("Dubbing process completed successfully!")
+#             dubbed_audio.seek(0)
+#             st.audio(dubbed_audio, format=mime_type)
+#             st.download_button(
+#                 label="Download dub",
+#                 data = dubbed_audio,
+#                 file_name = f"dubbed_audio.{mime_type.split('/')[-1]}",
+#                 mime=mime_type
+#             )
+#         else:
+#             st.warning("No audio to play or download.")
 
-    with st.spinner("Running quality check... "):
-        qa_result = run_quality_check(transcript, translated)
-        if qa_result:
-            st.success("Quality check complete!")
-    st.markdown("### Quality Check Result")
-    st.write(qa_result)
+#     with st.spinner("Running quality check... "):
+#         qa_result = run_quality_check(transcript, translated)
+#         if qa_result:
+#             st.success("Quality check complete!")
+#     st.markdown("### Quality Check Result")
+#     st.write(qa_result)

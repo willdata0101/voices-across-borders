@@ -1,42 +1,106 @@
-import pytest
-import voices_across_borders as app
-from unittest.mock import patch
+import app as app
+from unittest.mock import patch, MagicMock
 
-sample_transcript = "Cuando tenía seis años vi una vez una magnífica lámina..."
-sample_translation = "When I was six years old, I once saw a magnificent illustration..."
-sample_qa_result = "Translation is accurate. Fluency: 9/10, Accuracy: 10/10"
+@patch("app.client_gr.chat.completions.create")
+def test_translate_transcript(mock_create):
+    # Setup fake response JSON
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content="This is the translated text."))]
+    )
+    # Input for the test
+    spanish_input = "Hola, ¿cómo estás?"
 
-@patch("voices_across_borders.requests.post")
-def test_translate_transcript(mock_post):
-    # Mock response from Groq
-    mock_post.return_value.json.return_value = {
-        "choices": [
-            {"message": {"content": sample_translation}}
-        ]
-    }
+    # Call the function under test
+    result = app.translate_transcript(spanish_input)
 
-    result = app.translate_transcript(sample_transcript)
-    assert sample_translation in result
+    # Assertions
+    assert result == "This is the translated text."
+    mock_create.assert_called_once()
 
-@patch("voices_across_borders.requests.post")
-def test_run_quality_check(mock_post):
+@patch("app.client_gr.chat.completions.create")
+def test_run_quality_check(mock_create):
     # Mock QA check result
-    mock_post.return_value.json.return_value = {
-        "choices": [
-            {"message": {"content": sample_qa_result}}
-        ]
-    }
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content="Fluency: 9/10, Accuracy: 10/10"))]
+    )
+    spanish_input = "Hola, ¿cómo estás?"
+    english_input = "Hello, how are you?"
 
-    result = app.run_quality_check(sample_transcript, sample_translation)
-    assert "Fluency" in result and "Accuracy" in result
+    # Call the function under test
+    result = app.run_quality_check(spanish_input, english_input)
+    # Assertions
+    assert result == "Fluency: 9/10, Accuracy: 10/10"
+    mock_create.assert_called_once()
 
-def test_transcribe_audio():
-    dummy_file = "fake_audio.mp3"
-    result = app.transcribe_audio(dummy_file)
-    assert result == "[Spanish transcript]"
+@patch("app.client_el.text_to_speech.convert")
+def test_generate_dub(mock_create):
+    # Simulate the ElevenLabs-like response structure
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(
+            message=MagicMock(
+                content="This is the generated audio stream."
+            )
+        )])
 
-def test_generate_dub():
-    result = app.generate_dub("test text")
-    assert result = "[Audio file URL or playback]"
+    input_text = "Hello there!"
+    result = app.generate_dub(input_text)
 
+    assert result == "This is the generated audio stream."
+    mock_create.assert_called_once()
+
+# ----------------------------
+# Edge cases / negative tests
+# ----------------------------
+
+@patch("app.client_gr.chat.completions.create")
+def test_translate_transcript_empty_input(mock_create):
+    # Setup fake response JSON
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=""))]
+    )
+    # Input for the test
+    spanish_input = ""
+
+    # Call the function under test
+    result = app.translate_transcript(spanish_input)
+
+    # Assertions
+    assert result == ""
+    mock_create.assert_called_once()
+
+@patch("app.client_gr.chat.completions.create")
+def test_run_quality_check_incomplete(mock_create):
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=""))]
+    )
+    spanish_input = "Hola, ¿cómo estás?"
+    english_input = ""
+
+    # Call the function under test
+    result = app.run_quality_check(spanish_input, english_input)
+    # Assertions
+    assert result == ""
+    mock_create.assert_called_once()
+
+@patch("app.client_el.text_to_speech.convert")
+def test_generate_dub_empty_text(mock_create):
+    mock_create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(content=""))])
     
+    result = app.generate_dub("")
+    assert result == ""
+
+# ----------------------------
+# Exception Handling Tests
+# ----------------------------
+
+@patch("app.client_gr.chat.completions.create")
+def test_translate_transcript_exception(mock_create):
+    mock_create.side_effect = Exception("API error")
+    spanish_input = "Hola, ¿cómo estás?"
+
+    # Call the function under test
+    with patch("builtins.print") as mock_print:
+        result = app.translate_transcript(spanish_input)
+        assert result is None
+        mock_print.assert_called_once_with("API error")
