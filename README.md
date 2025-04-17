@@ -1,6 +1,6 @@
 # Voices Across Borders
 
-🎧 **Multilingual Podcast Dubbing + QA Tool using ElevenLabs + Groq/Mixtral**
+🎧 **Multilingual Podcast Dubbing + QA Tool using ElevenLabs + Groq/Llama**
 
 This Streamlit-based app takes a Spanish-language podcast or audio clip, generates an English dub using ElevenLabs, and then uses an LLM (Mixtral via Groq API) to perform QA between the original and translated texts.
 
