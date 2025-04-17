@@ -3,3 +3,6 @@ groq
 pydub
 dotenv
 ffmpeg
+
+pytest
+requests
