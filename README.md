@@ -28,7 +28,7 @@ Built to demonstrate the power of combining LLMs, linguistic QA, and voice techn
 | Tool | Purpose |
 |------|---------|
 | `Streamlit` | App UI |
-| `Groq + Mixtral` | Translation & QA LLM |
+| `Groq + Llama 3-8B` | Translation & QA LLM |
 | `ElevenLabs API` | Dubbing audio synthesis (stubbed for testing) |
 | `pytest` | Automated unit testing |
 | `unittest.mock` | Mocking external APIs |
