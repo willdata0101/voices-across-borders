@@ -16,7 +16,7 @@ Built to demonstrate the power of combining LLMs, linguistic QA, and voice techn
 
 - 📥 Upload Spanish-language audio files
 - 📝 Auto-transcribe (placeholder for Whisper or ElevenLabs integration)
-- 🌍 Translate text using Mixtral (via Groq API)
+- 🌍 Translate text using Llama 3-8B (via Groq API)
 - 🔊 Generate English dub using ElevenLabs (stubbed with placeholder response)
 - ✅ Run linguistic and semantic quality checks using LLM
 - 🧪 Full test suite with `pytest` and mock Groq API calls
